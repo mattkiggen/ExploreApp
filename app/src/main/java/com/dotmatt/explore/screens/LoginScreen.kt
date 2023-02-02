@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.dotmatt.explore.viewmodels.LoginViewModel
 
 @Composable
@@ -51,6 +52,6 @@ fun LoginScreen(viewModel: LoginViewModel) {
 
 @Preview(showBackground = true)
 @Composable
-fun LoginPreview() {
-    /*LoginScreen()*/
+private fun LoginPreview() {
+    LoginScreen(LoginViewModel(NavController(LocalContext.current)))
 }

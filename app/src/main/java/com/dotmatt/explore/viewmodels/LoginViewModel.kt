@@ -30,7 +30,7 @@ class LoginViewModel(private val navController: NavController) : ViewModel() {
             if (it.isSuccessful) {
                 navController.navigate("home")
             } else {
-                Toast.makeText(context, "Hello world", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error signing in, check your credentials and try again", Toast.LENGTH_SHORT).show()
             }
         }
     }
