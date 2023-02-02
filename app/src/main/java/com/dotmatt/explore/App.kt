@@ -8,7 +8,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dotmatt.explore.screens.HomeScreen
 import com.dotmatt.explore.screens.LoginScreen
+import com.dotmatt.explore.screens.SignupScreen
 import com.dotmatt.explore.viewmodels.LoginViewModel
+import com.dotmatt.explore.viewmodels.SignupViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -22,6 +24,7 @@ fun App(auth: FirebaseAuth) {
         NavHost(navController = navController, startDestination = "home") {
             composable("home") { HomeScreen(auth, navController) }
             composable("login") { LoginScreen(LoginViewModel(navController)) }
+            composable("signup") { SignupScreen(SignupViewModel(navController)) }
         }
     }
 }

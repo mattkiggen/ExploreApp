@@ -34,4 +34,8 @@ class LoginViewModel(private val navController: NavController) : ViewModel() {
             }
         }
     }
+
+    fun handleSignup() {
+        navController.navigate("signup")
+    }
 }

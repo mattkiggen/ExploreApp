@@ -1,7 +1,7 @@
 package com.dotmatt.explore.screens
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -11,30 +11,22 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.dotmatt.explore.viewmodels.LoginViewModel
+import com.dotmatt.explore.viewmodels.SignupViewModel
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
+fun SignupScreen(viewModel: SignupViewModel) {
     val email by viewModel.email.observeAsState("")
     val password by viewModel.password.observeAsState("")
-    val context = LocalContext.current
+    val confirmPassword by viewModel.confirmPassword.observeAsState("")
 
-    Column(
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .padding(24.dp)
-            .fillMaxSize()
-    ) {
+    Column {
         TextField(
             value = email,
             onValueChange = { viewModel.onEmailChange(it) },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
-
-        Spacer(modifier = Modifier.size(16.dp))
 
         TextField(
             value = password,
@@ -43,18 +35,21 @@ fun LoginScreen(viewModel: LoginViewModel) {
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.size(24.dp))
+        TextField(
+            value = confirmPassword,
+            onValueChange = { viewModel.onConfirmPasswordChange(it) },
+            label = { Text("Confirm Password") },
+            modifier = Modifier.fillMaxWidth()
+        )
 
-        Button(onClick = { viewModel.handleSignIn(context) }) {
-            Text(text = "Login")
+        Button(onClick = { viewModel.handleSignup() }) {
+            Text("Signup")
         }
-
-        Text(text = "Signup here", Modifier.clickable { viewModel.handleSignup() })
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginPreview() {
-    LoginScreen(LoginViewModel(NavController(LocalContext.current)))
+fun SignupPreview() {
+    SignupScreen(SignupViewModel(NavController(LocalContext.current)))
 }
