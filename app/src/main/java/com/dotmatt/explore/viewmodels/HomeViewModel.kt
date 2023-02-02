@@ -10,6 +10,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val userService: UserService) : ViewModel() {
+    private val _email = MutableLiveData("")
+    val email: LiveData<String> = _email
+    val isSignedIn = userService.currentUser != null
+
+    fun setState() {
+        _email.value = userService.currentUser?.email
+    }
+
     fun logout(navController: NavController) {
         userService.logout()
         navController.navigate("login")

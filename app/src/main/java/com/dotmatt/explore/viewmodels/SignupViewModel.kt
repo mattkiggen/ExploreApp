@@ -3,12 +3,14 @@ package com.dotmatt.explore.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import com.dotmatt.explore.services.UserService
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SignupViewModel @Inject constructor() : ViewModel() {
+class SignupViewModel @Inject constructor(private val userService: UserService) : ViewModel() {
     private val _email = MutableLiveData("")
     private val _password = MutableLiveData("")
     private val _confirmPassword = MutableLiveData("")
@@ -29,15 +31,15 @@ class SignupViewModel @Inject constructor() : ViewModel() {
         _confirmPassword.value = value
     }
 
-    fun handleSignup() {
+    fun handleSignup(navController: NavController) {
         if (_email.value.isNullOrEmpty() || _password.value.isNullOrEmpty() || _confirmPassword.value.isNullOrEmpty()) return
         if (!_confirmPassword.value.equals(_password.value)) return
 
-        FirebaseAuth.getInstance()
-            .createUserWithEmailAndPassword(_email.value!!, _password.value!!)
-            .addOnCompleteListener {
-            if (it.isSuccessful) {
-                /*nav.navigate("login")*/
+        userService.signup(_email.value!!, _password.value!!) { error ->
+            if (error == null) {
+                navController.navigate("home")
+            } else {
+
             }
         }
     }

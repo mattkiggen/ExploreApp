@@ -4,9 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
 class UserService @Inject constructor(private val auth: FirebaseAuth) {
-    fun isSignedIn(): Boolean {
-        return auth.currentUser != null
-    }
+    val currentUser get() = auth.currentUser
 
     fun login(email: String, password: String, onResult: (Throwable?) -> Unit) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {

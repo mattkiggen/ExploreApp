@@ -16,13 +16,12 @@ fun AppScaffold() {
     val navController = rememberNavController()
 
     Scaffold(
-        topBar = { Text(text = "topbar") },
         bottomBar = { Text(text = "bottom") })
     {
         NavHost(navController = navController, startDestination = "home") {
             composable("home") { HomeScreen(navController) }
             composable("login") { LoginScreen(navController) }
-            composable("signup") { SignupScreen() }
+            composable("signup") { SignupScreen(navController) }
         }
     }
 }

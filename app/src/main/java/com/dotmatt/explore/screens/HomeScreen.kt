@@ -1,5 +1,6 @@
 package com.dotmatt.explore.screens
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -10,23 +11,27 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.dotmatt.explore.viewmodels.HomeViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(navController: NavController) {
     val viewModel = hiltViewModel<HomeViewModel>()
+    val email by viewModel.email.observeAsState("")
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(true) {
         viewModel.viewModelScope.launch {
-            if (Firebase.auth.currentUser == null) {
+            if (viewModel.isSignedIn) {
+                viewModel.setState()
+            } else {
                 navController.navigate("login")
             }
         }
     }
 
-    Button(onClick = { viewModel.logout(navController) }) {
-        Text(text = "Logout")
+    Column {
+        Text(email)
+        Button(onClick = { viewModel.logout(navController) }) {
+            Text(text = "Logout")
+        }
     }
 }
