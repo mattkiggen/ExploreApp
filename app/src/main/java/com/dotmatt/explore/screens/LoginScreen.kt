@@ -12,11 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dotmatt.explore.viewmodels.LoginViewModel
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
+fun LoginScreen() {
+    val viewModel = hiltViewModel<LoginViewModel>()
     val email by viewModel.email.observeAsState("")
     val password by viewModel.password.observeAsState("")
     val context = LocalContext.current
@@ -56,5 +57,5 @@ fun LoginScreen(viewModel: LoginViewModel) {
 @Preview(showBackground = true)
 @Composable
 private fun LoginPreview() {
-    LoginScreen(LoginViewModel(NavController(LocalContext.current)))
+    LoginScreen()
 }

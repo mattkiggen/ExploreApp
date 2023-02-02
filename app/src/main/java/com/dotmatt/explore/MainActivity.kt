@@ -7,9 +7,11 @@ import com.dotmatt.explore.ui.theme.ExploreTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 
 private lateinit var auth: FirebaseAuth
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,7 +19,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             ExploreTheme {
-                App(auth)
+                AppScaffold(auth)
             }
         }
     }

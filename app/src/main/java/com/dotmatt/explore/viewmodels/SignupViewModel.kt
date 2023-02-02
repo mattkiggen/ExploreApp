@@ -3,10 +3,12 @@ package com.dotmatt.explore.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SignupViewModel(private val nav: NavController) : ViewModel() {
+@HiltViewModel
+class SignupViewModel @Inject constructor() : ViewModel() {
     private val _email = MutableLiveData("")
     private val _password = MutableLiveData("")
     private val _confirmPassword = MutableLiveData("")
@@ -35,7 +37,7 @@ class SignupViewModel(private val nav: NavController) : ViewModel() {
             .createUserWithEmailAndPassword(_email.value!!, _password.value!!)
             .addOnCompleteListener {
             if (it.isSuccessful) {
-                nav.navigate("login")
+                /*nav.navigate("login")*/
             }
         }
     }

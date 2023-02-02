@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun HomeScreen(auth: FirebaseAuth, navController: NavController) {
-    if (auth.currentUser == null) {
+    if (auth.currentUser != null) {
         navController.navigate("login")
     }
 

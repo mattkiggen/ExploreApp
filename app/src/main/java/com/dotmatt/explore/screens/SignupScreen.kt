@@ -11,11 +11,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.dotmatt.explore.viewmodels.SignupViewModel
 
 @Composable
-fun SignupScreen(viewModel: SignupViewModel) {
+fun SignupScreen() {
+    val viewModel = hiltViewModel<SignupViewModel>()
     val email by viewModel.email.observeAsState("")
     val password by viewModel.password.observeAsState("")
     val confirmPassword by viewModel.confirmPassword.observeAsState("")
@@ -51,5 +53,5 @@ fun SignupScreen(viewModel: SignupViewModel) {
 @Preview(showBackground = true)
 @Composable
 fun SignupPreview() {
-    SignupScreen(SignupViewModel(NavController(LocalContext.current)))
+    SignupScreen()
 }
