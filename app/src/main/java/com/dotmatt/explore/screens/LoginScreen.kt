@@ -1,11 +1,14 @@
 package com.dotmatt.explore.screens
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -13,14 +16,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.dotmatt.explore.viewmodels.LoginViewModel
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     val viewModel = hiltViewModel<LoginViewModel>()
     val email by viewModel.email.observeAsState("")
     val password by viewModel.password.observeAsState("")
-    val context = LocalContext.current
+    var context = LocalContext.current
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -46,16 +50,16 @@ fun LoginScreen() {
 
         Spacer(modifier = Modifier.size(24.dp))
 
-        Button(onClick = { viewModel.handleSignIn(context) }) {
+        Button(onClick = { viewModel.handleSignIn(context, navController) }) {
             Text(text = "Login")
         }
 
-        Text(text = "Signup here", Modifier.clickable { viewModel.handleSignup() })
+        Text(text = "Signup here", Modifier.clickable { viewModel.handleSignup(navController) })
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun LoginPreview() {
-    LoginScreen()
+    /*LoginScreen()*/
 }

@@ -12,7 +12,7 @@ import com.dotmatt.explore.screens.SignupScreen
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun AppScaffold(auth: FirebaseAuth) {
+fun AppScaffold() {
     val navController = rememberNavController()
 
     Scaffold(
@@ -20,8 +20,8 @@ fun AppScaffold(auth: FirebaseAuth) {
         bottomBar = { Text(text = "bottom") })
     {
         NavHost(navController = navController, startDestination = "home") {
-            composable("home") { HomeScreen(auth, navController) }
-            composable("login") { LoginScreen() }
+            composable("home") { HomeScreen(navController) }
+            composable("login") { LoginScreen(navController) }
             composable("signup") { SignupScreen() }
         }
     }

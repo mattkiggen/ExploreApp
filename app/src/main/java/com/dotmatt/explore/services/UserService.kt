@@ -1,33 +1,26 @@
 package com.dotmatt.explore.services
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
+import javax.inject.Inject
 
-class UserService {
-    private val _isSignedIn = MutableLiveData(false)
-    private val _auth = FirebaseAuth.getInstance()
-
-    val isSignedIn: LiveData<Boolean> = _isSignedIn // could make it the current user too
-
-    fun onAuthChange(value: Boolean) {
-        _isSignedIn.value = value
+class UserService @Inject constructor(private val auth: FirebaseAuth) {
+    fun isSignedIn(): Boolean {
+        return auth.currentUser != null
     }
 
-    fun handleLogin(email: String, password: String) {
-        _auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-            if (it.isSuccessful) _isSignedIn.value = true
+    fun login(email: String, password: String, onResult: (Throwable?) -> Unit) {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+            onResult(it.exception)
         }
     }
 
-    fun handleSignup(email: String, password: String) {
-        _auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
-
+    fun signup(email: String, password: String, onResult: (Throwable?) -> Unit) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
+            onResult(it.exception)
         }
     }
 
-    fun handleLogout() {
-        _auth.signOut()
-        _isSignedIn.value = false
+    fun logout() {
+        auth.signOut()
     }
 }
