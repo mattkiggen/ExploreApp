@@ -20,7 +20,6 @@ class HomeViewModel @Inject constructor(private val userService: UserService, pr
     fun setState() {
         if (userService.currentUser != null) {
             _email.value = userService.currentUser!!.email!!
-            storageService.getUserPreferences(userService.currentUser!!.uid)
         }
     }
 

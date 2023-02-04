@@ -1,6 +1,6 @@
 package com.dotmatt.explore.services
 
-import android.util.Log
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import javax.inject.Inject
@@ -15,11 +15,9 @@ class StorageService @Inject constructor(private val firestore: FirebaseFirestor
         firestore.collection("users").document(uid).set(settings)
     }
 
-    fun getUserPreferences(uid: String) {
+    fun getUserPreferences(uid: String, onSuccess: (DocumentSnapshot) -> Unit) {
         val doc = firestore.collection("users").document(uid)
-        doc.get().addOnSuccessListener { document ->
-            if (document != null) Log.d("document", document.toString())
-        }
+        doc.get().addOnSuccessListener { onSuccess(it) }
     }
 
     fun updateUserPreferences(uid: String, settings: HashMap<String, String>) {
