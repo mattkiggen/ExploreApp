@@ -8,8 +8,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,11 +19,14 @@ import com.dotmatt.explore.viewmodels.SignupViewModel
 @Composable
 fun SignupScreen(navController: NavController) {
     val viewModel = hiltViewModel<SignupViewModel>()
-    val email by viewModel.email.observeAsState("")
-    val password by viewModel.password.observeAsState("")
-    val confirmPassword by viewModel.confirmPassword.observeAsState("")
+    val email by viewModel.email.collectAsState()
+    val password by viewModel.password.collectAsState()
+    val confirmPassword by viewModel.confirmPassword.collectAsState()
 
-    Column(Modifier.padding(24.dp).fillMaxSize()) {
+    Column(
+        Modifier
+            .padding(24.dp)
+            .fillMaxSize()) {
         TextField(
             value = email,
             onValueChange = { viewModel.onEmailChange(it) },

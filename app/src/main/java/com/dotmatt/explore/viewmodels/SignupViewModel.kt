@@ -1,23 +1,23 @@
 package com.dotmatt.explore.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.dotmatt.explore.services.UserService
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(private val userService: UserService) : ViewModel() {
-    private val _email = MutableLiveData("")
-    private val _password = MutableLiveData("")
-    private val _confirmPassword = MutableLiveData("")
+    private val _email = MutableStateFlow("")
+    val email = _email.asStateFlow()
 
-    val email: LiveData<String> = _email
-    val password: LiveData<String> = _password
-    val confirmPassword: LiveData<String> = _confirmPassword
+    private val _password = MutableStateFlow("")
+    val password = _password.asStateFlow()
+
+    private val _confirmPassword = MutableStateFlow("")
+    val confirmPassword = _confirmPassword.asStateFlow()
 
     fun onEmailChange(value: String) {
         _email.value = value
@@ -32,10 +32,10 @@ class SignupViewModel @Inject constructor(private val userService: UserService) 
     }
 
     fun handleSignup(navController: NavController) {
-        if (_email.value.isNullOrEmpty() || _password.value.isNullOrEmpty() || _confirmPassword.value.isNullOrEmpty()) return
-        if (!_confirmPassword.value.equals(_password.value)) return
+        if (email.value.isEmpty() || password.value.isEmpty() || confirmPassword.value.isEmpty()) return
+        if (confirmPassword.value != password.value) return
 
-        userService.signup(_email.value!!, _password.value!!) { error ->
+        userService.signup(email.value, password.value) { error ->
             if (error == null) {
                 navController.navigate("home")
             } else {

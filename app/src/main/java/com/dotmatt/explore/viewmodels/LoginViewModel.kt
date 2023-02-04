@@ -2,25 +2,23 @@ package com.dotmatt.explore.viewmodels
 
 import android.content.Context
 import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
-import com.dotmatt.explore.R
 import com.dotmatt.explore.services.UserService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val userService: UserService) : ViewModel() {
-    private val _email = MutableLiveData("")
-    private val _password = MutableLiveData("")
+    private val _email = MutableStateFlow("")
+    val email = _email.asStateFlow()
 
-    val email: LiveData<String> = _email
-    val password: LiveData<String> = _password
+    private val _password = MutableStateFlow("")
+    val password = _password.asStateFlow()
 
     fun onEmailChange(newEmail: String) {
         _email.value = newEmail
@@ -31,10 +29,10 @@ class LoginViewModel @Inject constructor(private val userService: UserService) :
     }
 
     fun handleSignIn(context: Context, navController: NavController) {
-        if (_email.value.isNullOrEmpty() || _password.value.isNullOrEmpty()) return
+        if (email.value.isEmpty() || password.value.isEmpty()) return
 
         viewModelScope.launch {
-            userService.login(email.value!!, password.value!!) { error ->
+            userService.login(email.value, password.value) { error ->
                 if (error == null) {
                     navController.navigate("home")
                 } else {

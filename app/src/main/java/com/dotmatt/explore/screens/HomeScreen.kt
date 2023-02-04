@@ -5,6 +5,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(navController: NavController) {
     val viewModel = hiltViewModel<HomeViewModel>()
-    val email by viewModel.email.observeAsState("")
+    val email by viewModel.email.collectAsState()
 
     LaunchedEffect(true) {
         viewModel.viewModelScope.launch {
@@ -29,7 +30,7 @@ fun HomeScreen(navController: NavController) {
     }
 
     Column {
-        Text(email)
+        Text(text = email)
         Button(onClick = { viewModel.logout(navController) }) {
             Text(text = "Logout")
         }
