@@ -25,7 +25,7 @@ fun AppScaffold() {
             composable("home") { HomeScreen(navController, hiltViewModel()) }
             composable("login") { LoginScreen(navController, hiltViewModel()) }
             composable("signup") { SignupScreen(navController, hiltViewModel()) }
-            composable("settings") { SettingsScreen() }
+            composable("settings") { SettingsScreen(navController, hiltViewModel()) }
             composable("map") { MapScreen() }
         }
     }
