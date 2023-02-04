@@ -17,7 +17,6 @@ class SettingsViewModel @Inject constructor(private val userService: UserService
     val unitOfMeasurement = _unitOfMeasurement.asStateFlow()
     val preferredLandmark = _preferredLandmark.asStateFlow()
 
-
     init {
         storageService.getUserPreferences(uid!!) { doc ->
             if (doc.get("preferredLandmark") != null) _preferredLandmark.value = doc.get("preferredLandmark") as String

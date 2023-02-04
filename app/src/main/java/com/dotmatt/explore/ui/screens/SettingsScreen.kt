@@ -1,13 +1,13 @@
 package com.dotmatt.explore.ui.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,7 +28,7 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel) {
             text = "Settings",
             fontSize = 36.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 48.dp)
+            modifier = Modifier.padding(bottom = 24.dp)
         )
 
         Text(
@@ -50,11 +50,13 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel) {
             checked = (landmark.value == "historic"),
             onClick = { viewModel.landmarkChange("historic") })
 
+        Spacer(modifier = Modifier.size(16.dp))
+
         Text(
             "UNIT OF MEASUREMENT",
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
         )
         CheckboxSetting(
             label = "Metric",
@@ -65,6 +67,7 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel) {
             checked = (unitOfMeasurement.value == "imperial"),
             onClick = { viewModel.measurementChange("imperial") })
 
+        Spacer(modifier = Modifier.size(48.dp))
         LogoutButton(navController, viewModel)
     }
 }
@@ -77,7 +80,11 @@ fun CheckboxSetting(label: String, checked: Boolean, onClick: (Boolean) -> Unit)
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(label)
-        Checkbox(checked = checked, onCheckedChange = onClick)
+        Checkbox(
+            checked = checked,
+            onCheckedChange = onClick,
+            colors = CheckboxDefaults.colors(checkedColor = Color.Blue, uncheckedColor = Color.LightGray)
+        )
     }
 }
 
@@ -91,7 +98,7 @@ fun LogoutButton(navController: NavController, viewModel: SettingsViewModel) {
                 }
             }
         }
-    }) {
+    }, shape = RoundedCornerShape(50.dp), modifier = Modifier.fillMaxWidth()) {
         Text(text = "Logout")
     }
 }
