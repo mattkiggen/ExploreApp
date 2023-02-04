@@ -1,4 +1,4 @@
-package com.dotmatt.explore.screens
+package com.dotmatt.explore.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button

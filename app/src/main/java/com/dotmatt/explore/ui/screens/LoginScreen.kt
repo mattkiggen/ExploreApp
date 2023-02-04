@@ -1,4 +1,4 @@
-package com.dotmatt.explore.screens
+package com.dotmatt.explore.ui.screens
 
 import android.content.Context
 import androidx.compose.foundation.clickable

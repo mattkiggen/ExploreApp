@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.dotmatt.explore.services.StorageService
 import com.dotmatt.explore.services.UserService
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +19,7 @@ class HomeViewModel @Inject constructor(private val userService: UserService, pr
     fun setState() {
         if (userService.currentUser != null) {
             _email.value = userService.currentUser!!.email!!
-            storageService.getUserPreferrences(userService.currentUser!!.uid)
+            storageService.getUserPreferences(userService.currentUser!!.uid)
         }
     }
 
