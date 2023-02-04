@@ -2,6 +2,7 @@ package com.dotmatt.explore.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import androidx.navigation.navOptions
 import com.dotmatt.explore.services.StorageService
 import com.dotmatt.explore.services.UserService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,10 @@ class HomeViewModel @Inject constructor(private val userService: UserService, pr
 
     fun logout(navController: NavController) {
         userService.logout()
-        navController.navigate("login")
+        navController.navigate("login") {
+            popUpTo("login") {
+                inclusive = true
+            }
+        }
     }
 }

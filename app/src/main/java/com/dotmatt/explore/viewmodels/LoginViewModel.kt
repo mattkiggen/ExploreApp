@@ -34,7 +34,11 @@ class LoginViewModel @Inject constructor(private val userService: UserService) :
         viewModelScope.launch {
             userService.login(email.value, password.value) { error ->
                 if (error == null) {
-                    navController.navigate("home")
+                    navController.navigate("home") {
+                        popUpTo("home") {
+                            inclusive = true
+                        }
+                    }
                 } else {
                     Toast.makeText(context, "Error signing in, check your credentials", Toast.LENGTH_SHORT).show()
                 }

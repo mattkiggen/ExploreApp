@@ -15,8 +15,7 @@ import com.dotmatt.explore.viewmodels.HomeViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(navController: NavController) {
-    val viewModel = hiltViewModel<HomeViewModel>()
+fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
     val email by viewModel.email.collectAsState()
 
     LaunchedEffect(true) {

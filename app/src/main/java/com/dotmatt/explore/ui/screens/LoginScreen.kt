@@ -17,8 +17,7 @@ import androidx.navigation.NavController
 import com.dotmatt.explore.viewmodels.LoginViewModel
 
 @Composable
-fun LoginScreen(navController: NavController) {
-    val viewModel = hiltViewModel<LoginViewModel>()
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
     val email by viewModel.email.collectAsState()
     val password by viewModel.password.collectAsState()
     val context = LocalContext.current

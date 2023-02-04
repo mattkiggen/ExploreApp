@@ -17,8 +17,7 @@ import androidx.navigation.NavController
 import com.dotmatt.explore.viewmodels.SignupViewModel
 
 @Composable
-fun SignupScreen(navController: NavController) {
-    val viewModel = hiltViewModel<SignupViewModel>()
+fun SignupScreen(navController: NavController, viewModel: SignupViewModel) {
     val email by viewModel.email.collectAsState()
     val password by viewModel.password.collectAsState()
     val confirmPassword by viewModel.confirmPassword.collectAsState()
