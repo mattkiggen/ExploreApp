@@ -4,21 +4,35 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import androidx.lifecycle.ViewModel
+import com.dotmatt.explore.models.Landmark
+import com.dotmatt.explore.services.StorageService
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class MapViewModel @Inject constructor() : ViewModel() {
+class MapViewModel @Inject constructor(private val storageService: StorageService) : ViewModel() {
+    private val _landmarks = MutableStateFlow(listOf<Landmark>())
+
+    val landmarks = _landmarks.asStateFlow()
     val startingPosition = LatLng(1.35, 103.87)
 
     @SuppressLint("MissingPermission")
     fun getUserLocation(context: Context, onSuccess: (Location) -> Unit) {
         val client = LocationServices.getFusedLocationProviderClient(context)
-        client.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, null).addOnSuccessListener {
-            onSuccess(it)
-        }
+        client.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, null)
+            .addOnSuccessListener {
+                onSuccess(it)
+            }
+    }
+
+    fun setLandmarks() {
+        storageService.getLandmarks(onSuccess = { landmarks ->
+            _landmarks.value = landmarks
+        })
     }
 }

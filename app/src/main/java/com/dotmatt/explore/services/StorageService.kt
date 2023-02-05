@@ -1,5 +1,7 @@
 package com.dotmatt.explore.services
 
+import com.dotmatt.explore.models.Landmark
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -25,8 +27,21 @@ class StorageService @Inject constructor(private val firestore: FirebaseFirestor
         firestore.collection("users").document(uid).set(settings, SetOptions.merge())
     }
 
-    fun getLandmarks() {
+    fun getLandmarks(onSuccess: (List<Landmark>) -> Unit) {
         val collection = firestore.collection("landmarks")
-        collection.get().addOnSuccessListener { it.documents.toList() }
+
+        collection.get().addOnSuccessListener { query ->
+            val landmarks = mutableListOf<Landmark>()
+
+            query.documents.forEach { doc ->
+                val title = doc.get("title") as String
+                val description = doc.get("description") as String
+                val landmark = Landmark(title, description, LatLng(1.0, 1.0))
+
+                landmarks.add(landmark)
+            }
+
+            onSuccess(landmarks)
+        }
     }
 }
