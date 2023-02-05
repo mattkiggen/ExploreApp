@@ -1,5 +1,6 @@
 package com.dotmatt.explore
 
+import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,6 +14,7 @@ import com.dotmatt.explore.ui.components.BottomNav
 import com.dotmatt.explore.ui.screens.*
 import com.dotmatt.explore.viewmodels.HomeViewModel
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AppScaffold() {
     val navController = rememberNavController()
@@ -26,7 +28,7 @@ fun AppScaffold() {
             composable("login") { LoginScreen(navController, hiltViewModel()) }
             composable("signup") { SignupScreen(navController, hiltViewModel()) }
             composable("settings") { SettingsScreen(navController, hiltViewModel()) }
-            composable("map") { MapScreen() }
+            composable("map") { MapScreen(hiltViewModel()) }
         }
     }
 }
