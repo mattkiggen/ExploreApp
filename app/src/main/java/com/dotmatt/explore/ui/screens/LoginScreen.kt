@@ -1,18 +1,15 @@
 package com.dotmatt.explore.ui.screens
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.dotmatt.explore.viewmodels.LoginViewModel
 
@@ -46,16 +43,15 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
 
         Spacer(modifier = Modifier.size(24.dp))
 
-        Button(onClick = { viewModel.handleSignIn(context, navController) }) {
+        Button(
+            onClick = { viewModel.handleSignIn(context, navController) },
+            shape = RoundedCornerShape(percent = 50),
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text(text = "Login")
         }
 
+        Spacer(modifier = Modifier.size(24.dp))
         Text(text = "Signup here", Modifier.clickable { viewModel.handleSignup(navController) })
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun LoginPreview() {
-    /*LoginScreen()*/
 }

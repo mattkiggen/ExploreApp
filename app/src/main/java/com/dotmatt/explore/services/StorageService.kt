@@ -9,7 +9,8 @@ class StorageService @Inject constructor(private val firestore: FirebaseFirestor
     fun initUserPreferences(uid: String) {
         val settings = hashMapOf(
             "preferredLandmark" to "all",
-            "unit" to "metric"
+            "unit" to "metric",
+            "favourites" to listOf<String>()
         )
 
         firestore.collection("users").document(uid).set(settings)
