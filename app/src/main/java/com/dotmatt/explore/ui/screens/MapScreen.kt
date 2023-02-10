@@ -1,8 +1,7 @@
 package com.dotmatt.explore.ui.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -12,8 +11,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewModelScope
+import com.dotmatt.explore.ui.components.CustomMarker
 import com.dotmatt.explore.viewmodels.MapViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -30,7 +32,7 @@ fun MapScreen(viewModel: MapViewModel) {
 
     if (locationPermission.hasPermission) {
         val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(viewModel.startingPosition, 15f)
+            position = CameraPosition.fromLatLngZoom(viewModel.startingPosition, 10f)
         }
 
         val context = LocalContext.current
@@ -40,7 +42,7 @@ fun MapScreen(viewModel: MapViewModel) {
             viewModel.viewModelScope.launch {
                 viewModel.getUserLocation(context) {
                     cameraPositionState.position =
-                        CameraPosition.fromLatLngZoom(LatLng(it.latitude, it.longitude), 15f)
+                        CameraPosition.fromLatLngZoom(LatLng(it.latitude, it.longitude), 10f)
                 }
                 viewModel.setLandmarks()
             }
@@ -54,18 +56,7 @@ fun MapScreen(viewModel: MapViewModel) {
                 .fillMaxSize()
         ) {
             landmarks.value.forEach {
-                MarkerInfoWindow(
-                    state = MarkerState(position = it.location),
-                    title = it.title,
-                    snippet = it.description
-                ) { marker ->
-                    Surface(elevation = 8.dp) {
-                        Column {
-                            Text(marker.title ?: "Loading", color = Color.Red)
-                            Text(marker.snippet ?: "Loading", color = Color.Red)
-                        }
-                    }
-                }
+                CustomMarker(it)
             }
         }
     } else {

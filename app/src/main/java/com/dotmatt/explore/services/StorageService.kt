@@ -36,7 +36,11 @@ class StorageService @Inject constructor(private val firestore: FirebaseFirestor
             query.documents.forEach { doc ->
                 val title = doc.get("title") as String
                 val description = doc.get("description") as String
-                val landmark = Landmark(title, description, LatLng(1.0, 1.0))
+                val lat = doc.get("lat") as Double
+                val lng = doc.get("lng") as Double
+                val type = doc.get("type") as String
+
+                val landmark = Landmark(title, description, LatLng(lat, lng), type)
 
                 landmarks.add(landmark)
             }
