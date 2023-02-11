@@ -6,6 +6,7 @@ import android.location.Location
 import androidx.lifecycle.ViewModel
 import com.dotmatt.explore.models.Landmark
 import com.dotmatt.explore.services.StorageService
+import com.dotmatt.explore.services.UserService
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
@@ -15,7 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class MapViewModel @Inject constructor(private val storageService: StorageService) : ViewModel() {
+class MapViewModel @Inject constructor(private val storageService: StorageService, private val userService: UserService) : ViewModel() {
     private val _landmarks = MutableStateFlow(listOf<Landmark>())
 
     val landmarks = _landmarks.asStateFlow()
@@ -32,7 +33,14 @@ class MapViewModel @Inject constructor(private val storageService: StorageServic
 
     fun setLandmarks() {
         storageService.getLandmarks(onSuccess = { landmarks ->
-            _landmarks.value = landmarks
+            storageService.getUserPreferences(userService.currentUser?.uid!!,  onSuccess = {
+                val preferredLandmark = it.get("preferredLandmark") as String
+
+                if (preferredLandmark == "all")
+                    _landmarks.value = landmarks
+                else
+                    _landmarks.value = landmarks.filter { landmark -> landmark.type == preferredLandmark }
+            })
         })
     }
 }
