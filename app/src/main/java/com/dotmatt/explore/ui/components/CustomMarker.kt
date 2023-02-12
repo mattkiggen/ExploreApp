@@ -95,7 +95,7 @@ fun CustomMarker(
                             modifier = Modifier.size(14.dp)
                         )
                         Spacer(modifier = Modifier.size(4.dp))
-                        Text(text = "$distance $unit", fontSize = 12.sp)
+                        Text(text = "~ $distance $unit", fontSize = 12.sp)
                     }
                 }
             }
