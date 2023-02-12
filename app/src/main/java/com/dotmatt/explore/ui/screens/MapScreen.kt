@@ -3,9 +3,7 @@ package com.dotmatt.explore.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -33,6 +31,10 @@ fun MapScreen(viewModel: MapViewModel) {
         val context = LocalContext.current
         val landmarks = viewModel.landmarks.collectAsState()
         val userUnit = viewModel.userUnit.collectAsState()
+        val userPosition = viewModel.userPosition.collectAsState()
+
+        val showPolyline = remember { mutableStateOf(false) }
+        val selectedLandmarkPosition = remember { mutableStateOf(LatLng(0.0, 0.0)) }
 
         LaunchedEffect(true) {
             viewModel.viewModelScope.launch {
@@ -53,7 +55,20 @@ fun MapScreen(viewModel: MapViewModel) {
                 .fillMaxSize()
         ) {
             landmarks.value.forEach {
-                CustomMarker(it, cameraPositionState.position.target, unitType = userUnit.value)
+                CustomMarker(
+                    it,
+                    userPosition.value,
+                    unitType = userUnit.value,
+                    onClick = { marker ->
+                        selectedLandmarkPosition.value = marker.position
+                        showPolyline.value = true
+                        true
+                    },
+                    onClose = { showPolyline.value = false })
+            }
+
+            if (showPolyline.value) {
+                Polyline(points = listOf(userPosition.value, selectedLandmarkPosition.value))
             }
         }
     } else {

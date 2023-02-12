@@ -25,11 +25,15 @@ class MapViewModel @Inject constructor(private val storageService: StorageServic
     private val _userUnit = MutableStateFlow("")
     val userUnit = _userUnit.asStateFlow()
 
+    private val _userPosition = MutableStateFlow(startingPosition)
+    val userPosition = _userPosition.asStateFlow()
+
     @SuppressLint("MissingPermission")
     fun getUserLocation(context: Context, onSuccess: (Location) -> Unit) {
         val client = LocationServices.getFusedLocationProviderClient(context)
         client.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, null)
             .addOnSuccessListener {
+                _userPosition.value = LatLng(it.latitude, it.longitude)
                 onSuccess(it)
             }
     }
