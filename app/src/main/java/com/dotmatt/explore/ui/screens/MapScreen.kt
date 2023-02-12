@@ -11,19 +11,25 @@ import androidx.lifecycle.viewModelScope
 import com.dotmatt.explore.ui.components.CustomMarker
 import com.dotmatt.explore.viewmodels.MapViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.PolyUtil
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MapScreen(viewModel: MapViewModel) {
-    val locationPermission =
-        rememberPermissionState(permission = android.Manifest.permission.ACCESS_FINE_LOCATION)
+    val permissions = rememberMultiplePermissionsState(
+        permissions = listOf(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.INTERNET
+        )
+    )
 
-    if (locationPermission.hasPermission) {
+    if (permissions.allPermissionsGranted) {
         val cameraPositionState = rememberCameraPositionState {
             position = CameraPosition.fromLatLngZoom(viewModel.startingPosition, 10f)
         }
@@ -32,15 +38,14 @@ fun MapScreen(viewModel: MapViewModel) {
         val landmarks = viewModel.landmarks.collectAsState()
         val userUnit = viewModel.userUnit.collectAsState()
         val userPosition = viewModel.userPosition.collectAsState()
-
-        val showPolyline = remember { mutableStateOf(false) }
-        val selectedLandmarkPosition = remember { mutableStateOf(LatLng(0.0, 0.0)) }
+        val showPolyline = viewModel.showPolyline.collectAsState()
+        val polylinePoints = viewModel.polylinePoints.collectAsState()
 
         LaunchedEffect(true) {
             viewModel.viewModelScope.launch {
                 viewModel.getUserLocation(context) {
                     cameraPositionState.position =
-                        CameraPosition.fromLatLngZoom(LatLng(it.latitude, it.longitude), 10f)
+                        CameraPosition.fromLatLngZoom(LatLng(it.latitude, it.longitude), 14f)
                 }
                 viewModel.setUserUnit()
                 viewModel.setLandmarks()
@@ -60,21 +65,19 @@ fun MapScreen(viewModel: MapViewModel) {
                     userPosition.value,
                     unitType = userUnit.value,
                     onClick = { marker ->
-                        selectedLandmarkPosition.value = marker.position
-                        showPolyline.value = true
+                        viewModel.setPolylinePoints(userPosition.value, marker.position)
+                        viewModel.showPolyline(true)
                         true
                     },
-                    onClose = { showPolyline.value = false })
+                    onClose = { viewModel.showPolyline(false) })
             }
 
-            if (showPolyline.value) {
-                Polyline(points = listOf(userPosition.value, selectedLandmarkPosition.value))
-            }
+            if (showPolyline.value) Polyline(points = PolyUtil.decode(polylinePoints.value))
         }
     } else {
         Column {
-            Text(text = "This app requires location permission to function correctly")
-            Button(onClick = { locationPermission.launchPermissionRequest() }) {
+            Text(text = "This app requires location and internet permission to function correctly")
+            Button(onClick = { permissions.launchMultiplePermissionRequest() }) {
                 Text(text = "Grant permission")
             }
         }
