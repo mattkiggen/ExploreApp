@@ -1,20 +1,14 @@
 package com.dotmatt.explore.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewModelScope
 import com.dotmatt.explore.ui.components.CustomMarker
 import com.dotmatt.explore.viewmodels.MapViewModel
@@ -38,6 +32,7 @@ fun MapScreen(viewModel: MapViewModel) {
 
         val context = LocalContext.current
         val landmarks = viewModel.landmarks.collectAsState()
+        val userUnit = viewModel.userUnit.collectAsState()
 
         LaunchedEffect(true) {
             viewModel.viewModelScope.launch {
@@ -45,6 +40,7 @@ fun MapScreen(viewModel: MapViewModel) {
                     cameraPositionState.position =
                         CameraPosition.fromLatLngZoom(LatLng(it.latitude, it.longitude), 10f)
                 }
+                viewModel.setUserUnit()
                 viewModel.setLandmarks()
             }
         }
@@ -57,7 +53,7 @@ fun MapScreen(viewModel: MapViewModel) {
                 .fillMaxSize()
         ) {
             landmarks.value.forEach {
-                CustomMarker(it)
+                CustomMarker(it, cameraPositionState.position.target, unitType = userUnit.value)
             }
         }
     } else {
