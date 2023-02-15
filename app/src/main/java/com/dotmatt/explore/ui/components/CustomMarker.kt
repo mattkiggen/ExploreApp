@@ -12,6 +12,8 @@ import androidx.compose.material.icons.outlined.Landscape
 import androidx.compose.material.icons.outlined.NearMe
 import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,14 +38,17 @@ fun CustomMarker(
 ) {
     val distance = remember {
         val result = FloatArray(1)
+
         Location.distanceBetween(
-            landmark.location.latitude,
-            landmark.location.longitude,
             currentUserLocation.latitude,
             currentUserLocation.longitude,
+            landmark.location.latitude,
+            landmark.location.longitude,
             result
         )
-        if (unitType == "metric") result[0] / 1000 else result[0] / 1609.344f
+
+        val distance = if (unitType == "metric") result[0] / 1000 else result[0] / 1609.344f
+        mutableStateOf(distance)
     }
 
     val unit = if (unitType == "metric") "km" else "miles"
@@ -95,7 +100,7 @@ fun CustomMarker(
                             modifier = Modifier.size(14.dp)
                         )
                         Spacer(modifier = Modifier.size(4.dp))
-                        Text(text = "~ $distance $unit", fontSize = 12.sp)
+                        Text(text = "~ ${distance.value} $unit", fontSize = 12.sp)
                     }
                 }
             }

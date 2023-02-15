@@ -16,13 +16,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 
 @Composable
-fun PasswordTextField(value: String, onValueChange: (String) -> Unit) {
+fun PasswordTextField(value: String, label: String = "Password", onValueChange: (String) -> Unit) {
     val passwordVisible = rememberSaveable { mutableStateOf(false) }
 
     TextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text("Password") },
+        label = { Text(label) },
         visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             val image = if (passwordVisible.value) Icons.Filled.Visibility else Icons.Filled.VisibilityOff

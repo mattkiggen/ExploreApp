@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.dotmatt.explore.ui.components.PasswordTextField
 import com.dotmatt.explore.viewmodels.SignupViewModel
 
 @Composable
@@ -36,31 +37,16 @@ fun SignupScreen(navController: NavController, viewModel: SignupViewModel) {
             value = email,
             onValueChange = { viewModel.onEmailChange(it) },
             label = { Text("Email") },
-            leadingIcon = { Icon(Icons.Default.Email, "") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        TextField(
-            value = password,
-            onValueChange = { viewModel.onPasswordChange(it) },
-            label = { Text("Password") },
-            leadingIcon = { Icon(Icons.Default.Lock, "") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation()
-        )
+        PasswordTextField(value = password, onValueChange = { viewModel.onPasswordChange(it) })
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        TextField(
-            value = confirmPassword,
-            onValueChange = { viewModel.onConfirmPasswordChange(it) },
-            label = { Text("Confirm Password") },
-            leadingIcon = { Icon(Icons.Default.Lock, "") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        PasswordTextField(value = confirmPassword, label = "Confirm Password", onValueChange = { viewModel.onConfirmPasswordChange(it) })
 
         Spacer(modifier = Modifier.size(24.dp))
 
