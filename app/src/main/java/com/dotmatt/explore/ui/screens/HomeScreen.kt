@@ -1,11 +1,18 @@
 package com.dotmatt.explore.ui.screens
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.dotmatt.explore.viewmodels.HomeViewModel
@@ -25,7 +32,18 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
         }
     }
 
-    Column {
-        Text(text = email)
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Icon(
+            Icons.Outlined.Bookmarks,
+            contentDescription = "Favourites",
+            tint = Color.LightGray,
+            modifier = Modifier.size(64.dp)
+        )
+        Spacer(modifier = Modifier.size(16.dp))
+        Text(text = "You currently have no favourites")
     }
 }
