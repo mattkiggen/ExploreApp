@@ -45,7 +45,7 @@ fun BottomNav(navController: NavController, currentRoute: String?) {
 
 @Composable
 fun NavItem(icon: ImageVector, label: String, isSelected: Boolean, onClick: () -> Unit) {
-    val backgroundColor = if (isSelected) Color.LightGray else Color.Transparent
+    val backgroundColor = if (isSelected) Color(0xffe5e5ea) else Color.Transparent
 
     Row(
         verticalAlignment = Alignment.CenterVertically,

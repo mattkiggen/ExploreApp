@@ -40,7 +40,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
         Icon(
             Icons.Outlined.Bookmarks,
             contentDescription = "Favourites",
-            tint = Color.LightGray,
+            tint = Color(0xffe5e5ea),
             modifier = Modifier.size(64.dp)
         )
         Spacer(modifier = Modifier.size(16.dp))
